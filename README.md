@@ -5,7 +5,7 @@ Webcam Analysis Toolkit
 python -m pip install -r requirements.txt 
 
 # start
-git clone https://github.com/GospelCoding33/GospelCoding.git
+git clone https://github.com/GospelHack33/GospelCoding.git
 cd GospelCoding
 
 # run
