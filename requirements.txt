@@ -1,4 +1,3 @@
 requests
-python3
 python-cfonts
 colorama
