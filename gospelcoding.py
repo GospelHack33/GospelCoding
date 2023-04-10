@@ -24,7 +24,7 @@ print(Fore.BLUE+'V3.2.1'.center(66)+Fore.WHITE)
 #
 
 # ...
-print(Fore.GREEN+'[01] Fetch Active WebCams By Country'+Fore.WHITE, '\n')
+print(Fore.GREEN+'[01] Fetch Active WebCams In A Country'+Fore.WHITE, '\n')
 #
 
 # ...
