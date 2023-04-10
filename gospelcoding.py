@@ -43,7 +43,7 @@ if opt == 1:
         pass
 
    country = input(Fore.BLUE+'[*] Country [Alpha-2-Code] >>  '+Fore.WHITE).upper()
-   category = input(Fore.BLUE+'\n[*] Category [beach airport city] >> '+Fore.WHITE)
+   category = input(Fore.BLUE+'\n[*] Category [beach airport city bay area building camping forest island marketplace mountain other landscape] >> '+Fore.WHITE)
    if len(country) == 2:
       pass
    else:
