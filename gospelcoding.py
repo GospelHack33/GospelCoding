@@ -43,14 +43,13 @@ if opt == 1:
         pass
 
    country = input(Fore.BLUE+'[*] Country [Alpha-2-Code] >>  '+Fore.WHITE).upper()
+   category = input(Fore.BLUE+'\n[*] Category [beach airport city] >> '+Fore.WHITE)
    if len(country) == 2:
       pass
    else:
       print(Fore.RED+'\n[*] The Country Code Must Be An Alpha-2-Code e.g NG For Nigeria CA For Canada EU For Europe And So On...'+Fore.WHITE)
-
    print(Fore.YELLOW+'\n[*] Fetching Active WebCams At {}... '.format(country)+Fore.WHITE, '\n')
-
-   fetch = requests.get('https://api.windy.com/api/webcams/v2/list/country={}/orderby=popularity/limit=20?key={}'.format(country, apikey))
+   fetch = requests.get('https://api.windy.com/api/webcams/v2/list/category={}/country={}/orderby=popularity/limit=20?key={}'.format(category, country, apikey))
    if fetch.text == '{"status":"OK","result":{"offset":0,"limit":20,"total":0,"webcams":[]}}':
       print(Fore.GREEN+'\n[*] No Active WebCams Available...'+Fore.WHITE)
       exit(0)
