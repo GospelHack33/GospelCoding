@@ -5,7 +5,17 @@ import time
 import os
 import requests
 import cfonts
+from requests.structures import CaseInsensitiveDict
 from colorama import Fore, Back
+import re
+
+headers = CaseInsensitiveDict()
+headers["Accept"] = "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7"
+headers["Cache-Control"] = "max-age=0"
+headers["Connection"] = "keep-alive"
+headers["Host"] = "www.insecam.org"
+headers["Upgrade-Insecure-Requests"] = "1"
+headers["User-Agent"] = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36"
 
 # ...
 if os.name == 'posix':
@@ -20,11 +30,12 @@ else:
 app_title = cfonts.render('Gospel Coding', colors=['red', 'blue'], align='center')
 print(app_title)
 print(Fore.YELLOW+'WebCam Analysis Toolkit'.center(66)+Fore.WHITE)
-print(Fore.BLUE+'V3.2.1'.center(66)+Fore.WHITE)
+print(Fore.BLUE+'V4.3.1'.center(66)+Fore.WHITE)
 #
 
 # ...
 print(Fore.GREEN+'[01] Fetch Active WebCams In A Country'+Fore.WHITE, '\n')
+print(Fore.GREEN+'\n[02] Get Latest WebCams Footages In A Country [image video]'+Fore.WHITE, '\n')
 #
 
 # ...
@@ -58,5 +69,39 @@ if opt == 1:
    response = eval(fetch.text)['result']['webcams']
    for data in response:
        print(Fore.BLUE+'[*] WebCam ID - ', data['id'], Fore.GREEN+'Status -', data['status'], Fore.YELLOW+'Location - ', data['title'], '\n')
-else:
-     exit(0)
+elif opt == 2:
+     print(Fore.YELLOW+'[*] Enter Your API Key To Continue... If Not Available Then Request For An API Key At https://api.windy.com'+Fore.WHITE, '\n')
+     apikey = input(Fore.BLUE+'Enter API Key To Continue >> '+Fore.WHITE)
+     print('\n')
+     print(Fore.BLUE+'[*] Validating API Key... Please Wait.'+Fore.WHITE, '\n')
+     req = requests.get('https://api.windy.com/api/webcams/v2/list/country=GB/orderby=popularity/limit=20?key={}'.format(apikey))
+     if req.text == 'Forbidden':
+        print(Fore.RED+'\n[*] The API Key You Provided Is Incorrect... Check And Try Again!!!\n'+Fore.WHITE)
+        exit(0)
+     else:
+        pass
+
+     country = input(Fore.BLUE+'[*] Country [Alpha-2-Code] >>  '+Fore.WHITE).upper()
+     print(Fore.YELLOW+'\n[*] Fetching Latest WebCams Footages At {}... '.format(country)+Fore.WHITE, '\n')
+     fetch = requests.get(f'http://www.insecam.org/en/bycountry/{country}', headers = headers)
+     srch = re.findall('http://\d+.\d+.\d+.\d+:\d+/[a-z]+/[a-z]+.[a-z]+', fetch.text)
+     for footages in srch:
+         print(Fore.RED+'[*] '+footages+Fore.WHITE, '\n')
+     if len(srch) in [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]:
+        fetch = requests.get(
+            f"http://www.insecam.org/en/bycountry/{country}/?page=2",
+            headers=headers
+        )
+        srch = re.findall(r"http://\d+.\d+.\d+.\d+:\d+/[a-z]+/[a-z]+.[a-z]+", fetch.text)
+        for footages in srch:
+            print(Fore.RED+'[*] '+footages+Fore.WHITE, '\n')
+
+     if len(srch) in [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]:
+        fetch = requests.get(
+            f"http://www.insecam.org/en/bycountry/{country}/?page=3",
+            headers=headers
+        )
+        srch = re.findall(r"http://\d+.\d+.\d+.\d+:\d+/[a-z]+/[a-z]+.[a-z]+", fetch.text)
+        for footages in srch:
+            print(Fore.RED+'[*] '+footages+Fore.WHITE, '\n')
+
